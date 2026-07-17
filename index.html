@@ -1,33 +1,884 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Kiewik Projects</title>
-<meta name="description" content="Kiewik Projects — free browser extensions and practical tools for working with AI assistants.">
-<style>
-:root{color-scheme:light;--bg:#f4f7fb;--panel:#fff;--text:#10233f;--muted:#5b6c84;--line:#d8e1ee;--accent:#1769e8;--accent2:#6b4eff}*{box-sizing:border-box}body{margin:0;min-height:100vh;background:radial-gradient(circle at 85% 0,rgba(23,105,232,.13),transparent 30%),linear-gradient(180deg,#f7f9fd,#edf3fa);color:var(--text);font:16px/1.6 system-ui,-apple-system,"Segoe UI",sans-serif}.wrap{width:min(960px,calc(100% - 32px));margin:0 auto;padding:54px 0 72px}.hero,.card{background:rgba(255,255,255,.94);border:1px solid var(--line);border-radius:24px;box-shadow:0 18px 50px rgba(35,61,97,.10)}.hero{padding:clamp(28px,6vw,56px)}.eyebrow{font-size:12px;font-weight:850;letter-spacing:2px;color:var(--accent)}h1{font-size:clamp(38px,7vw,66px);line-height:1.02;margin:10px 0 16px}p{color:var(--muted);max-width:720px}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px;margin-top:22px}.card{padding:26px}.badge{display:inline-block;padding:6px 10px;border-radius:999px;background:#eaf1ff;color:var(--accent);font-size:12px;font-weight:800}h2{margin:14px 0 8px;font-size:27px}.links{display:flex;flex-wrap:wrap;gap:10px;margin-top:20px}a.btn{display:inline-flex;align-items:center;justify-content:center;padding:11px 15px;border-radius:12px;text-decoration:none;font-weight:800;border:1px solid var(--line);color:var(--text);background:#fff}a.btn.primary{background:linear-gradient(135deg,var(--accent),var(--accent2));border-color:transparent;color:#fff}.foot{margin-top:24px;text-align:center;color:var(--muted);font-size:13px}@media(prefers-color-scheme:dark){:root{color-scheme:dark;--bg:#090e17;--panel:#101827;--text:#eef5ff;--muted:#a5b2c6;--line:#27364d;--accent:#75a7ff;--accent2:#9b84ff}body{background:radial-gradient(circle at 85% 0,rgba(78,117,255,.18),transparent 30%),#090e17}.hero,.card{background:rgba(16,24,39,.96)}a.btn{background:#121d2f}}
-</style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Kiewik Projects — Practical tools for working with AI</title>
+  <meta name="description" content="Independent browser extensions and desktop tools focused on clearer AI limits, better workflow visibility and everyday usability.">
+  <meta name="theme-color" content="#0a1730">
+  <meta name="color-scheme" content="dark light">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preload" href="assets/horizon-flightboard-dark.webp" as="image" type="image/webp">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Kiewik Projects">
+  <meta property="og:description" content="Practical tools for working with AI. Discover Horizon AI for Claude.">
+  <meta property="og:url" content="https://kiewik.github.io/kiewik-projects/">
+  <meta property="og:image" content="https://kiewik.github.io/kiewik-projects/assets/horizon-promo.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <script>
+    (() => {
+      const stored = localStorage.getItem("kp-language");
+      document.documentElement.lang = stored || (navigator.language.toLowerCase().startsWith("pl") ? "pl" : "en");
+    })();
+  </script>
+  <style>
+    :root {
+      --bg: #071225;
+      --bg-soft: #0c1b35;
+      --panel: rgba(17, 37, 68, .78);
+      --panel-solid: #112544;
+      --line: rgba(139, 184, 255, .18);
+      --text: #eef6ff;
+      --muted: #a9b9d1;
+      --blue: #4a77ff;
+      --cyan: #55dcff;
+      --orange: #ff8737;
+      --green: #43d69d;
+      --shadow: 0 28px 80px rgba(0, 0, 0, .34);
+      --radius: 24px;
+      --max: 1180px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 14% 10%, rgba(55, 148, 255, .18), transparent 30rem),
+        radial-gradient(circle at 88% 22%, rgba(255, 127, 45, .10), transparent 27rem),
+        linear-gradient(180deg, #071225 0%, #08162b 52%, #06101f 100%);
+      min-height: 100vh;
+      line-height: 1.6;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: .22;
+      background-image:
+        linear-gradient(rgba(255,255,255,.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.025) 1px, transparent 1px);
+      background-size: 44px 44px;
+      mask-image: linear-gradient(to bottom, black, transparent 75%);
+      z-index: -1;
+    }
+
+    a { color: inherit; }
+    img { max-width: 100%; display: block; }
+
+    .wrap {
+      width: min(calc(100% - 40px), var(--max));
+      margin-inline: auto;
+    }
+
+    .lang-en, .lang-pl { display: none; }
+    html[lang="en"] .lang-en { display: initial; }
+    html[lang="pl"] .lang-pl { display: initial; }
+    html[lang="en"] .lang-block.lang-en,
+    html[lang="pl"] .lang-block.lang-pl { display: block; }
+
+    .skip {
+      position: absolute;
+      left: -9999px;
+      top: 8px;
+      z-index: 1000;
+      padding: 10px 14px;
+      border-radius: 10px;
+      background: white;
+      color: #071225;
+    }
+    .skip:focus { left: 8px; }
+
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      backdrop-filter: blur(18px);
+      background: rgba(7, 18, 37, .72);
+      border-bottom: 1px solid var(--line);
+    }
+    .nav-inner {
+      min-height: 72px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 850;
+      letter-spacing: .06em;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+    .brand-mark {
+      width: 38px;
+      height: 38px;
+      border: 2px solid var(--cyan);
+      transform: rotate(45deg);
+      border-radius: 8px;
+      position: relative;
+      box-shadow: 0 0 28px rgba(85, 220, 255, .24);
+    }
+    .brand-mark::before,
+    .brand-mark::after {
+      content: "";
+      position: absolute;
+      inset: 7px;
+      border: 2px solid var(--blue);
+      border-radius: 5px;
+    }
+    .brand-mark::after {
+      inset: 13px;
+      background: var(--orange);
+      border: 0;
+      border-radius: 3px;
+    }
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .nav-links a,
+    .language-button {
+      border: 0;
+      background: transparent;
+      color: var(--muted);
+      text-decoration: none;
+      font: inherit;
+      cursor: pointer;
+      padding: 10px 12px;
+      border-radius: 12px;
+      transition: .2s ease;
+    }
+    .nav-links a:hover,
+    .language-button:hover {
+      color: var(--text);
+      background: rgba(255,255,255,.06);
+    }
+    .language-button {
+      border: 1px solid var(--line);
+      color: var(--text);
+      min-width: 52px;
+    }
+
+    .hero {
+      padding: 88px 0 64px;
+      overflow: hidden;
+    }
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.02fr .98fr;
+      gap: 64px;
+      align-items: center;
+    }
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      padding: 7px 12px;
+      border: 1px solid rgba(85,220,255,.25);
+      background: rgba(85,220,255,.08);
+      color: #bfeeff;
+      border-radius: 999px;
+      font-size: .86rem;
+      font-weight: 750;
+      letter-spacing: .025em;
+    }
+    .eyebrow-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--green);
+      box-shadow: 0 0 16px rgba(67,214,157,.8);
+    }
+    h1 {
+      margin: 22px 0 18px;
+      font-size: clamp(3rem, 6vw, 5.8rem);
+      line-height: .97;
+      letter-spacing: -.055em;
+      max-width: 830px;
+    }
+    .gradient-text {
+      background: linear-gradient(105deg, #f6fbff 20%, #6fe1ff 58%, #6886ff 96%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    .hero p {
+      margin: 0;
+      color: var(--muted);
+      font-size: clamp(1.04rem, 1.8vw, 1.24rem);
+      max-width: 680px;
+    }
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 13px;
+      margin-top: 30px;
+    }
+    .button {
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      min-height: 50px;
+      padding: 0 20px;
+      border-radius: 14px;
+      text-decoration: none;
+      font-weight: 800;
+      border: 1px solid transparent;
+      transition: transform .2s ease, box-shadow .2s ease, background .2s ease;
+    }
+    .button:hover { transform: translateY(-2px); }
+    .button-primary {
+      background: linear-gradient(135deg, #4a77ff, #42b6ff);
+      box-shadow: 0 15px 34px rgba(62, 117, 255, .32);
+    }
+    .button-secondary {
+      border-color: var(--line);
+      background: rgba(255,255,255,.045);
+      color: var(--text);
+    }
+    .button-warm {
+      background: linear-gradient(135deg, #ff9e3e, #ff6f35);
+      color: #211205;
+      box-shadow: 0 15px 34px rgba(255, 126, 52, .22);
+    }
+
+    .trust-row {
+      margin-top: 26px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      color: #c3d0e3;
+      font-size: .9rem;
+    }
+    .trust-chip {
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.035);
+      padding: 7px 10px;
+      border-radius: 999px;
+    }
+
+    .visual-shell {
+      position: relative;
+      padding: 13px;
+      border-radius: 28px;
+      background: linear-gradient(145deg, rgba(99,173,255,.25), rgba(255,255,255,.035));
+      border: 1px solid rgba(139,184,255,.23);
+      box-shadow: var(--shadow);
+      transform: perspective(1300px) rotateY(-5deg) rotateX(2deg);
+    }
+    .visual-shell::before {
+      content: "";
+      position: absolute;
+      inset: -34px;
+      background: radial-gradient(circle, rgba(70, 118, 255, .24), transparent 68%);
+      z-index: -1;
+      filter: blur(12px);
+    }
+    .browser-bar {
+      height: 34px;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      padding: 0 8px;
+    }
+    .browser-dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: rgba(255,255,255,.24);
+    }
+    .visual-shell img {
+      border-radius: 17px;
+      border: 1px solid rgba(255,255,255,.1);
+      width: 100%;
+    }
+
+    section { padding: 76px 0; }
+    .section-head {
+      max-width: 760px;
+      margin-bottom: 34px;
+    }
+    .kicker {
+      color: var(--cyan);
+      text-transform: uppercase;
+      font-weight: 850;
+      font-size: .78rem;
+      letter-spacing: .16em;
+    }
+    h2 {
+      margin: 8px 0 12px;
+      font-size: clamp(2rem, 4vw, 3.4rem);
+      line-height: 1.06;
+      letter-spacing: -.035em;
+    }
+    .section-head p {
+      color: var(--muted);
+      margin: 0;
+      font-size: 1.04rem;
+    }
+
+    .feature-layout {
+      display: grid;
+      grid-template-columns: .9fr 1.1fr;
+      gap: 36px;
+      align-items: stretch;
+    }
+    .project-card,
+    .feature-card,
+    .future-card,
+    .trust-card,
+    .support-card {
+      border: 1px solid var(--line);
+      background: linear-gradient(145deg, rgba(20, 44, 79, .82), rgba(10, 26, 50, .9));
+      border-radius: var(--radius);
+      box-shadow: 0 22px 60px rgba(0,0,0,.16);
+    }
+    .project-card {
+      padding: 30px;
+      position: relative;
+      overflow: hidden;
+    }
+    .project-card::after {
+      content: "";
+      position: absolute;
+      width: 240px;
+      height: 240px;
+      right: -90px;
+      top: -90px;
+      background: radial-gradient(circle, rgba(85, 220, 255, .18), transparent 70%);
+    }
+    .project-title {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+    .project-title img {
+      width: 58px;
+      height: 58px;
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(61,110,255,.25);
+    }
+    .project-title h3 {
+      margin: 0;
+      font-size: 1.7rem;
+      letter-spacing: -.025em;
+    }
+    .project-title span {
+      color: var(--muted);
+      font-size: .93rem;
+    }
+    .project-card > p { color: var(--muted); }
+    .status {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      margin-top: 12px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: rgba(67,214,157,.09);
+      color: #8ff1c8;
+      border: 1px solid rgba(67,214,157,.22);
+      font-weight: 800;
+      font-size: .82rem;
+    }
+    .features {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+    }
+    .feature-card { padding: 20px; }
+    .feature-icon {
+      width: 38px;
+      height: 38px;
+      display: grid;
+      place-items: center;
+      border-radius: 12px;
+      background: rgba(74,119,255,.14);
+      color: #8fdfff;
+      font-weight: 900;
+      margin-bottom: 12px;
+    }
+    .feature-card h3 {
+      margin: 0 0 5px;
+      font-size: 1.02rem;
+    }
+    .feature-card p {
+      margin: 0;
+      color: var(--muted);
+      font-size: .91rem;
+    }
+
+    .gallery {
+      display: grid;
+      grid-template-columns: 1.2fr .9fr .9fr;
+      gap: 16px;
+    }
+    .gallery-button {
+      appearance: none;
+      padding: 0;
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      background: var(--panel-solid);
+      overflow: hidden;
+      cursor: zoom-in;
+      min-height: 250px;
+      position: relative;
+    }
+    .gallery-button img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform .35s ease;
+    }
+    .gallery-button:hover img { transform: scale(1.025); }
+    .gallery-label {
+      position: absolute;
+      left: 13px;
+      bottom: 13px;
+      padding: 7px 10px;
+      border-radius: 10px;
+      background: rgba(5,12,25,.82);
+      backdrop-filter: blur(10px);
+      color: white;
+      font-size: .84rem;
+      font-weight: 750;
+    }
+
+    .future-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+    .future-card { padding: 24px; }
+    .future-card h3 { margin: 8px 0 7px; }
+    .future-card p { color: var(--muted); margin: 0; font-size: .94rem; }
+    .future-tag {
+      color: #a7bbd7;
+      font-size: .79rem;
+      text-transform: uppercase;
+      letter-spacing: .11em;
+      font-weight: 850;
+    }
+
+    .trust-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+    }
+    .trust-card { padding: 30px; }
+    .trust-card ul {
+      margin: 18px 0 0;
+      padding: 0;
+      list-style: none;
+      display: grid;
+      gap: 11px;
+      color: #c5d3e5;
+    }
+    .trust-card li::before {
+      content: "✓";
+      color: var(--green);
+      font-weight: 900;
+      margin-right: 10px;
+    }
+
+    .support-card {
+      padding: 34px;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: center;
+      gap: 28px;
+      background:
+        radial-gradient(circle at 90% 20%, rgba(255,139,54,.18), transparent 18rem),
+        linear-gradient(145deg, rgba(33,45,69,.96), rgba(15,29,53,.96));
+    }
+    .support-card h2 { margin-top: 0; }
+    .support-card p { margin: 0; color: var(--muted); max-width: 700px; }
+
+    footer {
+      padding: 42px 0;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+    }
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 24px;
+      align-items: start;
+    }
+    .footer-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px 18px;
+    }
+    .footer-links a {
+      text-decoration: none;
+      color: #d5e2f3;
+    }
+    .disclaimer {
+      margin-top: 14px;
+      font-size: .84rem;
+      max-width: 800px;
+    }
+
+    .modal {
+      border: 0;
+      padding: 0;
+      width: min(94vw, 1280px);
+      max-height: 92vh;
+      background: transparent;
+    }
+    .modal::backdrop {
+      background: rgba(1, 7, 16, .86);
+      backdrop-filter: blur(12px);
+    }
+    .modal-inner {
+      position: relative;
+      background: #0a1830;
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+    }
+    .modal img { width: 100%; }
+    .modal-close {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      z-index: 2;
+      width: 42px;
+      height: 42px;
+      border: 1px solid rgba(255,255,255,.2);
+      border-radius: 50%;
+      background: rgba(6,15,30,.86);
+      color: white;
+      cursor: pointer;
+      font-size: 1.25rem;
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(22px);
+      transition: opacity .55s ease, transform .55s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: none;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after { transition: none !important; animation: none !important; }
+      .visual-shell { transform: none; }
+      .reveal { opacity: 1; transform: none; }
+    }
+
+    @media (max-width: 900px) {
+      .hero-grid,
+      .feature-layout,
+      .trust-grid { grid-template-columns: 1fr; }
+      .visual-shell { transform: none; }
+      .gallery { grid-template-columns: 1fr 1fr; }
+      .gallery-button:first-child { grid-column: 1 / -1; }
+      .future-grid { grid-template-columns: 1fr; }
+      .support-card { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 680px) {
+      .wrap { width: min(calc(100% - 24px), var(--max)); }
+      .nav-inner { min-height: 64px; }
+      .nav-links a { display: none; }
+      .hero { padding-top: 58px; }
+      h1 { font-size: clamp(2.65rem, 15vw, 4.1rem); }
+      .features,
+      .gallery { grid-template-columns: 1fr; }
+      .gallery-button:first-child { grid-column: auto; }
+      .footer-grid { grid-template-columns: 1fr; }
+      .hero-actions .button { width: 100%; }
+    }
+  </style>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "Horizon AI — Claude Limit Navigator",
+    "applicationCategory": "BrowserApplication",
+    "operatingSystem": "Chrome",
+    "url": "https://chromewebstore.google.com/detail/piagjdknagcocnfpblbbnokhjabimgcb",
+    "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"},
+    "author": {"@type": "Organization", "name": "Kiewik Projects"}
+  }
+  </script>
 </head>
 <body>
-<main class="wrap">
-<section class="hero">
-<div class="eyebrow">KIEWIK PROJECTS</div>
-<h1>Practical tools for working with AI.</h1>
-<p>Free browser extensions and utilities focused on clearer limits, better workflow visibility and everyday usability.</p>
-</section>
-<section class="grid" aria-label="Projects">
-<article class="card">
-<span class="badge">Chrome extension · Preview</span>
-<h2>Horizon AI</h2>
-<p>Claude limit navigator with 5-hour and weekly usage monitoring, reset countdowns, forecasts and local history.</p>
-<div class="links">
-<a class="btn primary" href="horizon-ai/privacy/">Privacy policy</a>
-<a class="btn" href="https://buymeacoffee.com/kiewikprojects" rel="noopener noreferrer">Support Kiewik Projects</a>
-</div>
-</article>
-</section>
-<p class="foot">Independent projects by Kiewik Projects. Horizon AI is not affiliated with Anthropic.</p>
-</main>
+  <a class="skip" href="#main"><span class="lang-en">Skip to content</span><span class="lang-pl">Przejdź do treści</span></a>
+
+  <header class="nav">
+    <div class="wrap nav-inner">
+      <a class="brand" href="#top" aria-label="Kiewik Projects">
+        <span class="brand-mark" aria-hidden="true"></span>
+        <span>KIEWIK PROJECTS</span>
+      </a>
+      <nav class="nav-links" aria-label="Primary">
+        <a href="#horizon"><span class="lang-en">Projects</span><span class="lang-pl">Projekty</span></a>
+        <a href="#privacy"><span class="lang-en">Privacy</span><span class="lang-pl">Prywatność</span></a>
+        <a href="#support"><span class="lang-en">Support</span><span class="lang-pl">Wsparcie</span></a>
+        <button class="language-button" type="button" id="languageButton" aria-label="Change language">PL</button>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="hero" id="top">
+      <div class="wrap hero-grid">
+        <div class="reveal">
+          <div class="eyebrow"><span class="eyebrow-dot"></span>
+            <span class="lang-en">Independent tools for AI workflows</span>
+            <span class="lang-pl">Niezależne narzędzia do pracy z AI</span>
+          </div>
+          <h1>
+            <span class="lang-en">Practical tools for <span class="gradient-text">working with AI.</span></span>
+            <span class="lang-pl">Praktyczne narzędzia do <span class="gradient-text">pracy z AI.</span></span>
+          </h1>
+          <p class="lang-block lang-en">Free browser extensions and desktop utilities focused on clearer limits, better workflow visibility and everyday usability.</p>
+          <p class="lang-block lang-pl">Darmowe rozszerzenia przeglądarki i programy komputerowe tworzone z myślą o czytelnych limitach, lepszym planowaniu pracy i codziennej wygodzie.</p>
+          <div class="hero-actions">
+            <a class="button button-primary" href="https://chromewebstore.google.com/detail/piagjdknagcocnfpblbbnokhjabimgcb" target="_blank" rel="noopener">
+              <span aria-hidden="true">↗</span>
+              <span class="lang-en">Install Horizon AI</span>
+              <span class="lang-pl">Zainstaluj Horizon AI</span>
+            </a>
+            <a class="button button-secondary" href="#horizon">
+              <span class="lang-en">Explore the project</span>
+              <span class="lang-pl">Poznaj projekt</span>
+            </a>
+          </div>
+          <div class="trust-row" aria-label="Highlights">
+            <span class="trust-chip">5H + 7D</span>
+            <span class="trust-chip">English + Polski</span>
+            <span class="trust-chip"><span class="lang-en">Local data</span><span class="lang-pl">Dane lokalne</span></span>
+            <span class="trust-chip">Chrome Web Store</span>
+          </div>
+        </div>
+
+        <div class="visual-shell reveal" aria-label="Horizon AI screenshot">
+          <div class="browser-bar" aria-hidden="true">
+            <span class="browser-dot"></span><span class="browser-dot"></span><span class="browser-dot"></span>
+          </div>
+          <img src="assets/horizon-flightboard-dark.webp" width="1280" height="800" alt="Horizon AI Daylight Flightboard in dark mode">
+        </div>
+      </div>
+    </section>
+
+    <section id="horizon">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <span class="kicker"><span class="lang-en">Available now</span><span class="lang-pl">Już dostępny</span></span>
+          <h2>Horizon AI</h2>
+          <p class="lang-block lang-en">A clear, local-first navigator for Claude 5-hour and weekly usage limits.</p>
+          <p class="lang-block lang-pl">Czytelny, lokalny nawigator limitów 5-godzinnych i tygodniowych Claude.</p>
+        </div>
+
+        <div class="feature-layout">
+          <article class="project-card reveal">
+            <div class="project-title">
+              <img src="assets/horizon-icon.png" width="128" height="128" alt="Horizon AI icon">
+              <div>
+                <h3>Claude Limit Navigator</h3>
+                <span>Chrome extension · Preview</span>
+              </div>
+            </div>
+            <div class="status"><span class="eyebrow-dot"></span>
+              <span class="lang-en">Published in Chrome Web Store</span>
+              <span class="lang-pl">Opublikowany w Chrome Web Store</span>
+            </div>
+            <p class="lang-block lang-en">See current usage, reset countdowns, pace forecasts and local history without digging through settings.</p>
+            <p class="lang-block lang-pl">Sprawdzaj aktualne zużycie, czas do resetu, prognozy tempa i lokalną historię bez przeklikiwania ustawień.</p>
+            <div class="hero-actions">
+              <a class="button button-primary" href="https://chromewebstore.google.com/detail/piagjdknagcocnfpblbbnokhjabimgcb" target="_blank" rel="noopener">
+                <span class="lang-en">Add to Chrome</span><span class="lang-pl">Dodaj do Chrome</span>
+              </a>
+              <a class="button button-secondary" href="horizon-ai/privacy/">
+                <span class="lang-en">Privacy policy</span><span class="lang-pl">Polityka prywatności</span>
+              </a>
+            </div>
+          </article>
+
+          <div class="features">
+            <article class="feature-card reveal"><div class="feature-icon">5H</div><h3><span class="lang-en">Live limit views</span><span class="lang-pl">Bieżące limity</span></h3><p class="lang-block lang-en">Monitor the active 5-hour session and weekly usage.</p><p class="lang-block lang-pl">Monitoruj aktywną sesję 5h i zużycie tygodniowe.</p></article>
+            <article class="feature-card reveal"><div class="feature-icon">↗</div><h3><span class="lang-en">Forecasts</span><span class="lang-pl">Prognozy</span></h3><p class="lang-block lang-en">Compare estimated exhaustion with the next reset.</p><p class="lang-block lang-pl">Porównuj prognozę wyczerpania z terminem resetu.</p></article>
+            <article class="feature-card reveal"><div class="feature-icon">◫</div><h3>Flightboard & Chronicle</h3><p class="lang-block lang-en">Review timelines, historical sessions and forecast accuracy.</p><p class="lang-block lang-pl">Analizuj osie czasu, historię sesji i trafność prognoz.</p></article>
+            <article class="feature-card reveal"><div class="feature-icon">⌁</div><h3><span class="lang-en">Flexible interface</span><span class="lang-pl">Elastyczny interfejs</span></h3><p class="lang-block lang-en">Popup, Chrome side panel and optional on-page indicators.</p><p class="lang-block lang-pl">Popup, panel boczny Chrome i opcjonalne wskaźniki na stronie.</p></article>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section aria-labelledby="gallery-title">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <span class="kicker"><span class="lang-en">Real interface</span><span class="lang-pl">Prawdziwy interfejs</span></span>
+          <h2 id="gallery-title"><span class="lang-en">See Horizon AI in action.</span><span class="lang-pl">Zobacz Horizon AI w działaniu.</span></h2>
+          <p class="lang-block lang-en">Click a screenshot to open a larger preview.</p>
+          <p class="lang-block lang-pl">Kliknij zrzut, aby otworzyć większy podgląd.</p>
+        </div>
+        <div class="gallery">
+          <button class="gallery-button reveal" data-image="assets/horizon-flightboard-light.webp" type="button">
+            <img src="assets/horizon-flightboard-light.webp" width="1280" height="800" loading="lazy" alt="Horizon AI Flightboard in light mode">
+            <span class="gallery-label">Daylight Flightboard</span>
+          </button>
+          <button class="gallery-button reveal" data-image="assets/horizon-flightboard-dark.webp" type="button">
+            <img src="assets/horizon-flightboard-dark.webp" width="1280" height="800" loading="lazy" alt="Horizon AI Flightboard in dark mode">
+            <span class="gallery-label"><span class="lang-en">Dark mode</span><span class="lang-pl">Tryb ciemny</span></span>
+          </button>
+          <button class="gallery-button reveal" data-image="assets/horizon-panel-deck.webp" type="button">
+            <img src="assets/horizon-panel-deck.webp" width="1280" height="800" loading="lazy" alt="Horizon AI navigation panel and deck">
+            <span class="gallery-label">Navigation Panel & Deck</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <section aria-labelledby="future-title">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <span class="kicker"><span class="lang-en">What is next</span><span class="lang-pl">Co dalej</span></span>
+          <h2 id="future-title"><span class="lang-en">More from Kiewik Projects.</span><span class="lang-pl">Kolejne projekty Kiewik Projects.</span></h2>
+          <p class="lang-block lang-en">A growing family of practical tools. These projects are still in development and are not yet available to install.</p>
+          <p class="lang-block lang-pl">Rozwijana rodzina praktycznych narzędzi. Poniższe projekty są w trakcie prac i nie są jeszcze dostępne do instalacji.</p>
+        </div>
+        <div class="future-grid">
+          <article class="future-card reveal"><span class="future-tag">In development</span><h3>Orbit AI for Gemini</h3><p class="lang-block lang-en">Limit monitoring and workflow visibility for Gemini.</p><p class="lang-block lang-pl">Monitorowanie limitów i czytelny podgląd pracy w Gemini.</p></article>
+          <article class="future-card reveal"><span class="future-tag">In development</span><h3>Zenith AI for ChatGPT</h3><p class="lang-block lang-en">Diagnostics, usage visibility and practical tools for ChatGPT.</p><p class="lang-block lang-pl">Diagnostyka, widoczność użycia i praktyczne narzędzia dla ChatGPT.</p></article>
+          <article class="future-card reveal"><span class="future-tag">Early development</span><h3>Kiewik Extension Studio</h3><p class="lang-block lang-en">A desktop audit and release builder for browser extensions.</p><p class="lang-block lang-pl">Program do audytu i przygotowywania wydań rozszerzeń przeglądarki.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section id="privacy">
+      <div class="wrap trust-grid">
+        <article class="trust-card reveal">
+          <span class="kicker">Privacy by design</span>
+          <h2><span class="lang-en">Clear data rules.</span><span class="lang-pl">Jasne zasady danych.</span></h2>
+          <ul>
+            <li><span class="lang-en">No advertising analytics or tracking scripts</span><span class="lang-pl">Bez analityki reklamowej i skryptów śledzących</span></li>
+            <li><span class="lang-en">No reading of conversations or prompts</span><span class="lang-pl">Bez odczytywania rozmów i promptów</span></li>
+            <li><span class="lang-en">Local storage for Horizon AI usage history</span><span class="lang-pl">Lokalny zapis historii użycia Horizon AI</span></li>
+            <li><span class="lang-en">A public privacy policy for each published project</span><span class="lang-pl">Publiczna polityka prywatności każdego opublikowanego projektu</span></li>
+          </ul>
+        </article>
+        <article class="trust-card reveal">
+          <span class="kicker"><span class="lang-en">Independent development</span><span class="lang-pl">Niezależny rozwój</span></span>
+          <h2><span class="lang-en">Built for usefulness.</span><span class="lang-pl">Tworzone dla użyteczności.</span></h2>
+          <p class="lang-block lang-en">Kiewik Projects focuses on small, practical products that make everyday work with AI clearer and more predictable.</p>
+          <p class="lang-block lang-pl">Kiewik Projects koncentruje się na niewielkich, praktycznych produktach, które czynią codzienną pracę z AI bardziej czytelną i przewidywalną.</p>
+          <div class="hero-actions">
+            <a class="button button-secondary" href="https://github.com/kiewik/kiewik-projects/issues" target="_blank" rel="noopener">
+              <span class="lang-en">Report an issue</span><span class="lang-pl">Zgłoś problem</span>
+            </a>
+            <a class="button button-secondary" href="mailto:kiewikprojects@gmail.com">
+              <span class="lang-en">Contact</span><span class="lang-pl">Kontakt</span>
+            </a>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section id="support">
+      <div class="wrap support-card reveal">
+        <div>
+          <span class="kicker"><span class="lang-en">Support independent development</span><span class="lang-pl">Wesprzyj niezależny rozwój</span></span>
+          <h2><span class="lang-en">Help Kiewik Projects keep building.</span><span class="lang-pl">Pomóż dalej rozwijać Kiewik Projects.</span></h2>
+          <p class="lang-block lang-en">Optional support helps fund testing, AI subscriptions, translations and compatibility updates. All Horizon AI features remain free.</p>
+          <p class="lang-block lang-pl">Dobrowolne wsparcie pomaga finansować testy, subskrypcje AI, tłumaczenia i aktualizacje zgodności. Wszystkie funkcje Horizon AI pozostają darmowe.</p>
+        </div>
+        <a class="button button-warm" href="https://buymeacoffee.com/kiewikprojects" target="_blank" rel="noopener">
+          <span aria-hidden="true">♥</span>
+          <span class="lang-en">Support Kiewik Projects</span>
+          <span class="lang-pl">Wesprzyj Kiewik Projects</span>
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap footer-grid">
+      <div>
+        <strong>Kiewik Projects</strong>
+        <div class="disclaimer">
+          <span class="lang-en">Independent projects. Horizon AI is not affiliated with, endorsed by, or produced by Anthropic. Other service names belong to their respective owners.</span>
+          <span class="lang-pl">Niezależne projekty. Horizon AI nie jest powiązany, zatwierdzony ani tworzony przez Anthropic. Pozostałe nazwy usług należą do odpowiednich właścicieli.</span>
+        </div>
+      </div>
+      <div class="footer-links">
+        <a href="https://chromewebstore.google.com/detail/piagjdknagcocnfpblbbnokhjabimgcb" target="_blank" rel="noopener">Chrome Web Store</a>
+        <a href="horizon-ai/privacy/"><span class="lang-en">Privacy policy</span><span class="lang-pl">Polityka prywatności</span></a>
+        <a href="https://buymeacoffee.com/kiewikprojects" target="_blank" rel="noopener">Buy Me a Coffee</a>
+        <a href="mailto:kiewikprojects@gmail.com">kiewikprojects@gmail.com</a>
+      </div>
+    </div>
+  </footer>
+
+  <dialog class="modal" id="imageModal" aria-label="Screenshot preview">
+    <div class="modal-inner">
+      <button class="modal-close" type="button" id="modalClose" aria-label="Close">×</button>
+      <img id="modalImage" alt="">
+    </div>
+  </dialog>
+
+  <script>
+    const languageButton = document.getElementById("languageButton");
+
+    function applyLanguage(language) {
+      const next = language === "pl" ? "pl" : "en";
+      document.documentElement.lang = next;
+      localStorage.setItem("kp-language", next);
+      languageButton.textContent = next === "pl" ? "EN" : "PL";
+      languageButton.setAttribute("aria-label", next === "pl" ? "Switch to English" : "Przełącz na polski");
+    }
+    applyLanguage(document.documentElement.lang);
+    languageButton.addEventListener("click", () => {
+      applyLanguage(document.documentElement.lang === "pl" ? "en" : "pl");
+    });
+
+    const modal = document.getElementById("imageModal");
+    const modalImage = document.getElementById("modalImage");
+    document.querySelectorAll(".gallery-button").forEach(button => {
+      button.addEventListener("click", () => {
+        modalImage.src = button.dataset.image;
+        modalImage.alt = button.querySelector("img").alt;
+        modal.showModal();
+      });
+    });
+    document.getElementById("modalClose").addEventListener("click", () => modal.close());
+    modal.addEventListener("click", event => {
+      if (event.target === modal) modal.close();
+    });
+
+    const observer = "IntersectionObserver" in window
+      ? new IntersectionObserver(entries => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add("visible");
+              observer.unobserve(entry.target);
+            }
+          });
+        }, { threshold: .12 })
+      : null;
+
+    document.querySelectorAll(".reveal").forEach(element => {
+      if (observer) observer.observe(element);
+      else element.classList.add("visible");
+    });
+  </script>
 </body>
 </html>
