@@ -174,8 +174,8 @@
     }
     .hero-grid {
       display: grid;
-      grid-template-columns: 1.02fr .98fr;
-      gap: 64px;
+      grid-template-columns: minmax(0, .92fr) minmax(520px, 1.08fr);
+      gap: 52px;
       align-items: center;
     }
     .eyebrow {
@@ -269,23 +269,28 @@
 
     .visual-shell {
       position: relative;
-      padding: 13px;
-      border-radius: 28px;
-      background: linear-gradient(145deg, rgba(99,173,255,.25), rgba(255,255,255,.035));
+      width: 100%;
+      max-width: 690px;
+      min-width: 0;
+      justify-self: end;
+      padding: 12px;
+      border-radius: 24px;
+      background: linear-gradient(145deg, rgba(99,173,255,.23), rgba(255,255,255,.035));
       border: 1px solid rgba(139,184,255,.23);
       box-shadow: var(--shadow);
-      transform: perspective(1300px) rotateY(-5deg) rotateX(2deg);
+      overflow: hidden;
+      transform: none;
     }
     .visual-shell::before {
       content: "";
       position: absolute;
-      inset: -34px;
-      background: radial-gradient(circle, rgba(70, 118, 255, .24), transparent 68%);
+      inset: -28px;
+      background: radial-gradient(circle, rgba(70, 118, 255, .22), transparent 68%);
       z-index: -1;
       filter: blur(12px);
     }
     .browser-bar {
-      height: 34px;
+      height: 30px;
       display: flex;
       align-items: center;
       gap: 7px;
@@ -298,9 +303,15 @@
       background: rgba(255,255,255,.24);
     }
     .visual-shell img {
-      border-radius: 17px;
-      border: 1px solid rgba(255,255,255,.1);
+      display: block;
       width: 100%;
+      height: auto !important;
+      aspect-ratio: 16 / 10;
+      object-fit: contain;
+      object-position: center top;
+      border-radius: 15px;
+      border: 1px solid rgba(255,255,255,.1);
+      background: #0a1830;
     }
 
     section { padding: 76px 0; }
@@ -598,11 +609,18 @@
       .reveal { opacity: 1; transform: none; }
     }
 
+    @media (max-width: 1080px) {
+      .hero-grid { grid-template-columns: 1fr; }
+      .visual-shell {
+        justify-self: center;
+        max-width: 820px;
+        margin-top: 8px;
+      }
+    }
+
     @media (max-width: 900px) {
-      .hero-grid,
       .feature-layout,
       .trust-grid { grid-template-columns: 1fr; }
-      .visual-shell { transform: none; }
       .gallery { grid-template-columns: 1fr 1fr; }
       .gallery-button:first-child { grid-column: 1 / -1; }
       .future-grid { grid-template-columns: 1fr; }
@@ -620,6 +638,12 @@
       .gallery-button:first-child { grid-column: auto; }
       .footer-grid { grid-template-columns: 1fr; }
       .hero-actions .button { width: 100%; }
+      .visual-shell {
+        padding: 8px;
+        border-radius: 18px;
+      }
+      .browser-bar { height: 25px; }
+      .visual-shell img { border-radius: 11px; }
     }
   </style>
   <script type="application/ld+json">
@@ -690,7 +714,7 @@
           <div class="browser-bar" aria-hidden="true">
             <span class="browser-dot"></span><span class="browser-dot"></span><span class="browser-dot"></span>
           </div>
-          <img src="assets/horizon-flightboard-dark.webp" width="1280" height="800" alt="Horizon AI Daylight Flightboard in dark mode">
+          <img src="assets/horizon-flightboard-dark.webp" width="1280" height="800" alt="Wide Horizon AI Daylight Flightboard dashboard in dark mode">
         </div>
       </div>
     </section>
