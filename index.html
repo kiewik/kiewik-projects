@@ -503,6 +503,22 @@
     }
     .support-card h2 { margin-top: 0; }
     .support-card p { margin: 0; color: var(--muted); max-width: 700px; }
+    .support-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      min-width: 280px;
+    }
+    .button-suppi {
+      background: linear-gradient(135deg, #ff5a91, #ff7a59);
+      color: #260710;
+      box-shadow: 0 15px 34px rgba(255, 90, 145, .22);
+    }
+    .support-note {
+      margin-top: 10px !important;
+      font-size: .9rem;
+      color: #c4d1e3 !important;
+    }
 
     footer {
       padding: 42px 0;
@@ -800,12 +816,31 @@
           <h2><span class="lang-en">Help Kiewik Projects keep building.</span><span class="lang-pl">Pomóż dalej rozwijać Kiewik Projects.</span></h2>
           <p class="lang-block lang-en">Optional support helps fund testing, AI subscriptions, translations and compatibility updates. All Horizon AI features remain free.</p>
           <p class="lang-block lang-pl">Dobrowolne wsparcie pomaga finansować testy, subskrypcje AI, tłumaczenia i aktualizacje zgodności. Wszystkie funkcje Horizon AI pozostają darmowe.</p>
+          <p class="support-note lang-block lang-en">Choose an international option or the Polish Suppi page.</p>
+          <p class="support-note lang-block lang-pl">W Polsce najwygodniej skorzystać z Suppi. Dostępne jest też wsparcie międzynarodowe.</p>
         </div>
-        <a class="button button-warm" href="https://buymeacoffee.com/kiewikprojects" target="_blank" rel="noopener">
-          <span aria-hidden="true">♥</span>
-          <span class="lang-en">Support Kiewik Projects</span>
-          <span class="lang-pl">Wesprzyj Kiewik Projects</span>
-        </a>
+
+        <div class="support-actions lang-block lang-en" aria-label="Support options">
+          <a class="button button-warm" href="https://buymeacoffee.com/kiewikprojects" target="_blank" rel="noopener">
+            <span aria-hidden="true">☕</span>
+            <span>International — Buy Me a Coffee</span>
+          </a>
+          <a class="button button-suppi" href="https://suppi.pl/kiewikprojects" target="_blank" rel="noopener">
+            <span aria-hidden="true">🇵🇱</span>
+            <span>Poland — Suppi</span>
+          </a>
+        </div>
+
+        <div class="support-actions lang-block lang-pl" aria-label="Opcje wsparcia">
+          <a class="button button-suppi" href="https://suppi.pl/kiewikprojects" target="_blank" rel="noopener">
+            <span aria-hidden="true">🇵🇱</span>
+            <span>Polska — Suppi</span>
+          </a>
+          <a class="button button-warm" href="https://buymeacoffee.com/kiewikprojects" target="_blank" rel="noopener">
+            <span aria-hidden="true">🌍</span>
+            <span>Międzynarodowo — Buy Me a Coffee</span>
+          </a>
+        </div>
       </div>
     </section>
   </main>
@@ -822,6 +857,7 @@
       <div class="footer-links">
         <a href="https://chromewebstore.google.com/detail/piagjdknagcocnfpblbbnokhjabimgcb" target="_blank" rel="noopener">Chrome Web Store</a>
         <a href="horizon-ai/privacy/"><span class="lang-en">Privacy policy</span><span class="lang-pl">Polityka prywatności</span></a>
+        <a href="https://suppi.pl/kiewikprojects" target="_blank" rel="noopener">Suppi — Polska</a>
         <a href="https://buymeacoffee.com/kiewikprojects" target="_blank" rel="noopener">Buy Me a Coffee</a>
         <a href="mailto:kiewikprojects@gmail.com">kiewikprojects@gmail.com</a>
       </div>
