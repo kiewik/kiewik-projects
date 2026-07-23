@@ -1,9 +1,9 @@
-# Kiewik Projects Website 2.0.0
+# Kiewik Projects Website 2.0.1 — Support Choice Update
 
-- Complete visual rebuild aligned with current Kiewik Projects branding.
-- Horizon for Claude 2.1.19 becomes the primary public product.
-- Removed old Horizon AI / Preview marketing language.
-- Added responsive real-product gallery and dedicated product page.
-- Added bilingual copy, dark/light theme and accessible navigation.
-- Added privacy compatibility bridge for the existing Chrome Web Store URL.
-- Added SEO, Open Graph, structured data, sitemap and custom 404 page.
+- Added the confirmed Suppi profile: https://suppi.pl/kiewikprojects
+- Kept Buy Me a Coffee: https://buymeacoffee.com/kiewikprojects
+- Both support methods are always visible in Polish and English.
+- Added separate platform descriptions and buttons.
+- Added both support methods to the footer.
+- Added Suppi to Organization structured data.
+- Removed the old hidden/conditional Polish support-card logic.
